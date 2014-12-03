@@ -64,7 +64,7 @@ public class MyActivity extends Activity {
         myMap = ((MapFragment) getFragmentManager().findFragmentById(R.id.map)).getMap();
         myMap.setMyLocationEnabled(true);
 
-        loadMarkers();
+        String hello = loadMarkers();
         addMarkers();
         zoomToMyLocation();
 
@@ -72,10 +72,10 @@ public class MyActivity extends Activity {
     }
 
 
-    public void loadMarkers(){
+    public String loadMarkers(){
 
         BufferedReader in = null;
-        String baseUrl = "https://pplabs.co.uk/~mandeep/myServer2.php?user=2&format=json&num=10";
+        String baseUrl = "http://www.dipjhutti.zz.vc/myServer3.php?user=2&format=json&num=10";
 
         HttpClient httpclient = new DefaultHttpClient();
         HttpGet httpget = new HttpGet(baseUrl);
