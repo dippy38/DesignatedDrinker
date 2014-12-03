@@ -38,6 +38,11 @@
             </intent-filter>
         </activity>
 
+        <activity
+            android:name=".Dispenser"
+            android:label="@string/app_name" >
+        </activity>
+
 
 
     </application>
