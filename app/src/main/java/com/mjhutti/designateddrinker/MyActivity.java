@@ -31,6 +31,9 @@ import org.json.JSONObject;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 
 public class MyActivity extends Activity {
@@ -100,7 +103,7 @@ public class MyActivity extends Activity {
             for (int i=0; i<posts.length(); i++){
                 JSONObject row = posts.getJSONObject(i);
                 JSONObject subRow =  row.getJSONObject("post");
-                Marker myMarker = new Marker(subRow.getInt("DispenserID"),subRow.getString("Name"),subRow.getString("Drinks"),subRow.getDouble("lat"),subRow.getDouble("lng"));
+                Marker myMarker = new Marker(subRow.getInt("DispenserID"),subRow.getString("Name"),subRow.getString("Drinks"),subRow.getDouble("lat"),subRow.getDouble("lng"),subRow.getString("dateAdded"));
                 addMarkers(myMarker);
             }
         }
@@ -112,8 +115,48 @@ public class MyActivity extends Activity {
         final LatLng CIU = new LatLng(myMarker.getLat(),myMarker.getLng());
         MarkerOptions markerOptions = new MarkerOptions().position(CIU).title(myMarker.getName());
         markerOptions.position(CIU).snippet(myMarker.getDrinks());
+        markerOptions.alpha(calculateOpacity(myMarker.getDateAdded()));
         myMap.addMarker(markerOptions);
     }
+
+    public long calculateOpacity(Date oldDate){
+
+        long diffSeconds;
+        long diffMinutes;
+        long diffHours;
+        long diffDays=0;
+        //HH converts hour in 24 hours format (0-23), day calculation
+        SimpleDateFormat format = new SimpleDateFormat("YYYY-MM-DD");
+        Date newDate = new Date();
+
+
+        Date d1 = null;
+        Date d2 = null;
+
+        try {
+            d1 = format.parse(newDate.toString());
+            d2 = format.parse(oldDate.toString());
+
+            //in milliseconds
+            long diff = d2.getTime() - d1.getTime();
+
+            diffSeconds = diff / 1000 % 60;
+            diffMinutes = diff / (60 * 1000) % 60;
+            diffHours = diff / (60 * 60 * 1000) % 24;
+            diffDays = diff / (24 * 60 * 60 * 1000);
+
+            System.out.print(diffDays + " days, ");
+            System.out.print(diffHours + " hours, ");
+            System.out.print(diffMinutes + " minutes, ");
+            System.out.print(diffSeconds + " seconds.");
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+    return 100-diffDays;
+    }
+
 
     public void zoomToMyLocation(){
         if (myMap != null) {

@@ -1,5 +1,7 @@
 package com.mjhutti.designateddrinker;
 
+import java.util.Date;
+
 /**
  * Created by mjhutti on 03/12/2014.
  */
@@ -10,6 +12,7 @@ public class Marker {
     private String drinks;
     private double lat;
     private double lng;
+    private Date dateAdded;
 
     public Marker(int dispenserID, String name, String drinks, double lat, double lng){
         this.dispenserID= dispenserID;
@@ -18,6 +21,17 @@ public class Marker {
         this.lat=lat;
         this.lng=lng;
     }
+
+    public Marker(int dispenserID, String name, String drinks, double lat, double lng, String dateAdded){
+        this.dispenserID= dispenserID;
+        this.name=name;
+        this.drinks=drinks;
+        this.lat=lat;
+        this.lng=lng;
+        this.dateAdded=new Date(dateAdded);
+    }
+
+
 
     public int getDispenserID() {
         return dispenserID;
@@ -60,4 +74,11 @@ public class Marker {
     }
 
 
+    public Date getDateAdded() {
+        return dateAdded;
+    }
+
+    public void setDateAdded(Date dateAdded) {
+        this.dateAdded = dateAdded;
+    }
 }
