@@ -32,6 +32,7 @@ import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 import java.text.DateFormat;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
@@ -58,7 +59,7 @@ public class MyActivity extends Activity {
         } catch (UnsupportedEncodingException e) {
             e.printStackTrace();
         }
-       // addMarkers();
+        //addMarkers();
         zoomToMyLocation();
 
 
@@ -103,7 +104,20 @@ public class MyActivity extends Activity {
             for (int i=0; i<posts.length(); i++){
                 JSONObject row = posts.getJSONObject(i);
                 JSONObject subRow =  row.getJSONObject("post");
-                Marker myMarker = new Marker(subRow.getInt("DispenserID"),subRow.getString("Name"),subRow.getString("Drinks"),subRow.getDouble("lat"),subRow.getDouble("lng"),subRow.getString("dateAdded"));
+
+//Fri Oct 10 00:00:00 GMT+01:00 2014
+                DateFormat dateFormat = new SimpleDateFormat("EEE MMM dd") ;
+
+                Date inputDate = null;
+                try {
+                    inputDate = dateFormat.parse(subRow.getString("dateAdded").substring(1,10));
+                } catch (ParseException e) {
+                    e.printStackTrace();
+                }
+
+                System.out.println(inputDate);
+
+                Marker myMarker = new Marker(subRow.getInt("dispenserID"),subRow.getString("name"),subRow.getString("drinks"),subRow.getDouble("lat"),subRow.getDouble("lng"), subRow.getString("dateAdded"));
                 addMarkers(myMarker);
             }
         }
@@ -154,6 +168,7 @@ public class MyActivity extends Activity {
             e.printStackTrace();
         }
 
+        //need to filter out those great than 100 days old
     return 100-diffDays;
     }
 
