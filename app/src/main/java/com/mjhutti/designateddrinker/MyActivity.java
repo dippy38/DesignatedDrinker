@@ -105,17 +105,14 @@ public class MyActivity extends Activity {
                 JSONObject row = posts.getJSONObject(i);
                 JSONObject subRow =  row.getJSONObject("post");
 
-//Fri Oct 10 00:00:00 GMT+01:00 2014
-                DateFormat dateFormat = new SimpleDateFormat("EEE MMM dd") ;
+                DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd") ;
 
                 Date inputDate = null;
                 try {
-                    inputDate = dateFormat.parse(subRow.getString("dateAdded").substring(1,10));
+                    inputDate = dateFormat.parse(subRow.getString("dateAdded").substring(0,10));
                 } catch (ParseException e) {
                     e.printStackTrace();
                 }
-
-                System.out.println(inputDate);
 
                 Marker myMarker = new Marker(subRow.getInt("dispenserID"),subRow.getString("name"),subRow.getString("drinks"),subRow.getDouble("lat"),subRow.getDouble("lng"), subRow.getString("dateAdded"));
                 addMarkers(myMarker);
@@ -140,7 +137,7 @@ public class MyActivity extends Activity {
         long diffHours;
         long diffDays=0;
         //HH converts hour in 24 hours format (0-23), day calculation
-        SimpleDateFormat format = new SimpleDateFormat("YYYY-MM-DD");
+        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
         Date newDate = new Date();
 
 

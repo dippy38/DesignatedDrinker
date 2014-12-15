@@ -25,16 +25,6 @@ public class Marker {
         this.drinks=drinks;
         this.lat=lat;
         this.lng=lng;
-        DateFormat dateFormat = new SimpleDateFormat("EEE MMM dd HH:mm:ss z yyyy") {
-        };
-        Date inputDate = null;
-        try {
-            inputDate = dateFormat.parse(dateAdded);
-        } catch (ParseException e) {
-            e.printStackTrace();
-        }
-     //   this.dateAdded = inputDate;
-
     }
 
 
