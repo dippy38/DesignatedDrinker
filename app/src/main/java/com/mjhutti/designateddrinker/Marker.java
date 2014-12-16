@@ -19,15 +19,14 @@ public class Marker {
     private Date dateAdded;
 
 
-    public Marker(int dispenserID, String name, String drinks, double lat, double lng, String dateAdded){
+    public Marker(int dispenserID, String name, String drinks, double lat, double lng, Date dateAdded){
         this.dispenserID= dispenserID;
         this.name=name;
         this.drinks=drinks;
         this.lat=lat;
         this.lng=lng;
+        this.dateAdded=dateAdded;
     }
-
-
 
     public int getDispenserID() {
         return dispenserID;

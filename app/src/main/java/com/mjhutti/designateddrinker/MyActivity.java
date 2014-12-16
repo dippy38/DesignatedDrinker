@@ -41,6 +41,8 @@ public class MyActivity extends Activity {
 
     private LocationManager locMan;
     private GoogleMap myMap;
+    private long AGE_THRESHOLD=100;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -59,7 +61,7 @@ public class MyActivity extends Activity {
         } catch (UnsupportedEncodingException e) {
             e.printStackTrace();
         }
-        //addMarkers();
+
         zoomToMyLocation();
 
 
@@ -114,7 +116,7 @@ public class MyActivity extends Activity {
                     e.printStackTrace();
                 }
 
-                Marker myMarker = new Marker(subRow.getInt("dispenserID"),subRow.getString("name"),subRow.getString("drinks"),subRow.getDouble("lat"),subRow.getDouble("lng"), subRow.getString("dateAdded"));
+                Marker myMarker = new Marker(subRow.getInt("dispenserID"),subRow.getString("name"),subRow.getString("drinks"),subRow.getDouble("lat"),subRow.getDouble("lng"), inputDate);
                 addMarkers(myMarker);
             }
         }
@@ -124,49 +126,23 @@ public class MyActivity extends Activity {
 
     public void addMarkers(Marker myMarker){
         final LatLng CIU = new LatLng(myMarker.getLat(),myMarker.getLng());
-        MarkerOptions markerOptions = new MarkerOptions().position(CIU).title(myMarker.getName());
-        markerOptions.position(CIU).snippet(myMarker.getDrinks());
-        markerOptions.alpha(calculateOpacity(myMarker.getDateAdded()));
-        myMap.addMarker(markerOptions);
+        MarkerOptions markerOptions = new MarkerOptions();
+
+
+        if (calculateOpacity(myMarker.getDateAdded())*100<=AGE_THRESHOLD){
+            markerOptions.alpha(calculateOpacity(myMarker.getDateAdded()));
+            markerOptions.position(CIU).title(myMarker.getName());
+
+            markerOptions.position(CIU).snippet("Late Updated" + myMarker.getDateAdded().toString() +"\n" + myMarker.getDrinks());
+            myMap.addMarker(markerOptions);
+        }
     }
 
-    public long calculateOpacity(Date oldDate){
-
-        long diffSeconds;
-        long diffMinutes;
-        long diffHours;
-        long diffDays=0;
-        //HH converts hour in 24 hours format (0-23), day calculation
-        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
-        Date newDate = new Date();
-
-
-        Date d1 = null;
-        Date d2 = null;
-
-        try {
-            d1 = format.parse(newDate.toString());
-            d2 = format.parse(oldDate.toString());
-
-            //in milliseconds
-            long diff = d2.getTime() - d1.getTime();
-
-            diffSeconds = diff / 1000 % 60;
-            diffMinutes = diff / (60 * 1000) % 60;
-            diffHours = diff / (60 * 60 * 1000) % 24;
-            diffDays = diff / (24 * 60 * 60 * 1000);
-
-            System.out.print(diffDays + " days, ");
-            System.out.print(diffHours + " hours, ");
-            System.out.print(diffMinutes + " minutes, ");
-            System.out.print(diffSeconds + " seconds.");
-
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-
-        //need to filter out those great than 100 days old
-    return 100-diffDays;
+    public float calculateOpacity(Date dateAdded){
+        Date todaysDate = new Date();
+        float diffInMillies = todaysDate.getTime() - dateAdded.getTime();
+        float diffInDays = AGE_THRESHOLD-(diffInMillies/1000/60/60/24);
+    return diffInDays/100;
     }
 
 
