@@ -3,13 +3,15 @@ package com.mjhutti.designateddrinker;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.Locale;
 
 /**
  * Created by mjhutti on 03/12/2014.
  */
-public class Marker {
+public class Dispenser {
 
     private int dispenserID;
     private String name;
@@ -19,7 +21,7 @@ public class Marker {
     private Date dateAdded;
 
 
-    public Marker(int dispenserID, String name, String drinks, double lat, double lng, Date dateAdded){
+    public Dispenser(int dispenserID, String name, String drinks, double lat, double lng, Date dateAdded){
         this.dispenserID= dispenserID;
         this.name=name;
         this.drinks=drinks;
@@ -45,8 +47,24 @@ public class Marker {
     }
 
     public String getDrinks() {
+
         return drinks;
     }
+
+    public String getFormattedDrinks(){
+        ArrayList drinksList = new ArrayList<String>(Arrays.asList(drinks.split(",")));
+        for(int i=0; i<drinksList.size(); i++){
+            drinksList.set(i,"\n"+drinksList.get(i));
+        }
+        String formatedString = drinksList.toString()
+                .replace(",", "")  //remove the commas
+                .replace("[", "")  //remove the right bracket
+                .replace("]", "")  //remove the left bracket
+                .trim();           //remove trailing spaces from partially initialized arrays
+
+        return formatedString;
+    }
+
 
     public void setDrinks(String drinks) {
         this.drinks = drinks;

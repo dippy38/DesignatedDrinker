@@ -2,12 +2,18 @@ package com.mjhutti.designateddrinker;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
+import android.graphics.Color;
 import android.location.Location;
 import android.location.LocationManager;
 import android.os.Bundle;
 import android.os.StrictMode;
+import android.text.SpannableString;
+import android.text.style.ForegroundColorSpan;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.TextView;
 
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GooglePlayServicesUtil;
@@ -32,6 +38,7 @@ import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 import java.text.DateFormat;
+import java.text.Format;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -61,6 +68,32 @@ public class MyActivity extends Activity {
         } catch (UnsupportedEncodingException e) {
             e.printStackTrace();
         }
+
+        myMap.setInfoWindowAdapter(new GoogleMap.InfoWindowAdapter() {
+
+            private final View contents = getLayoutInflater().inflate(R.layout.popup, null);
+
+            public View getInfoWindow(com.google.android.gms.maps.model.Marker marker) {
+                return null;
+            }
+
+            @Override
+            public View getInfoContents(com.google.android.gms.maps.model.Marker marker) {
+
+                String title = marker.getTitle();
+
+                TextView txtTitle = ((TextView) contents.findViewById(R.id.txtInfoWindowTitle));
+                    SpannableString titleText = new SpannableString(title);
+                    titleText.setSpan(new ForegroundColorSpan(Color.RED), 0, titleText.length(), 0);
+                    txtTitle.setText(titleText);
+
+                TextView txtSnippet = ((TextView) contents.findViewById(R.id.txtInfoWindowDrinks));
+                txtSnippet.setText(marker.getSnippet());
+                return contents;
+
+
+            }
+        });
 
         zoomToMyLocation();
 
@@ -116,7 +149,7 @@ public class MyActivity extends Activity {
                     e.printStackTrace();
                 }
 
-                Marker myMarker = new Marker(subRow.getInt("dispenserID"),subRow.getString("name"),subRow.getString("drinks"),subRow.getDouble("lat"),subRow.getDouble("lng"), inputDate);
+                Dispenser myMarker = new Dispenser(subRow.getInt("dispenserID"),subRow.getString("name"),subRow.getString("drinks"),subRow.getDouble("lat"),subRow.getDouble("lng"), inputDate);
                 addMarkers(myMarker);
             }
         }
@@ -124,16 +157,18 @@ public class MyActivity extends Activity {
 
     }
 
-    public void addMarkers(Marker myMarker){
-        final LatLng CIU = new LatLng(myMarker.getLat(),myMarker.getLng());
+    public void addMarkers(Dispenser myDispenser){
+        final LatLng CIU = new LatLng(myDispenser.getLat(),myDispenser.getLng());
         MarkerOptions markerOptions = new MarkerOptions();
 
+        Format formatter = new SimpleDateFormat("dd/MM/yyyy");
+        String tempDate = formatter.format(myDispenser.getDateAdded());
 
-        if (calculateOpacity(myMarker.getDateAdded())*100<=AGE_THRESHOLD){
-            markerOptions.alpha(calculateOpacity(myMarker.getDateAdded()));
-            markerOptions.position(CIU).title(myMarker.getName());
 
-            markerOptions.position(CIU).snippet("Late Updated" + myMarker.getDateAdded().toString() +"\n" + myMarker.getDrinks());
+        if (calculateOpacity(myDispenser.getDateAdded())*100<=AGE_THRESHOLD){
+            markerOptions.alpha(calculateOpacity(myDispenser.getDateAdded()));
+            markerOptions.position(CIU).title(myDispenser.getName());
+            markerOptions.position(CIU).snippet(myDispenser.getFormattedDrinks() + "\n Last Updated: " + tempDate );
             myMap.addMarker(markerOptions);
         }
     }
@@ -176,10 +211,14 @@ public class MyActivity extends Activity {
         // Handle action bar item clicks here. The action bar will
         // automatically handle clicks on the Home/Up button, so long
         // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
-        if (id == R.id.action_settings) {
-            return true;
+        Intent intent = new Intent(this, AddDispenserActivity.class);
+
+        switch (item.getItemId()) {
+            case R.id.action_addDispenser:
+                startActivity(intent);
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
         }
-        return super.onOptionsItemSelected(item);
     }
 }

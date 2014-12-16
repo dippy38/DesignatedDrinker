@@ -2,5 +2,6 @@
 <resources>
 
     <string name="app_name">Designated Drinker</string>
-    <string name="action_settings">Settings</string>
+    <string name="action_addDispenser">Add Dispenser</string>
+    <string name="search_hint">Search Dispensers</string>
 </resources>
