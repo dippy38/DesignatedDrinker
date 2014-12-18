@@ -215,6 +215,11 @@ public class MyActivity extends Activity {
 
         switch (item.getItemId()) {
             case R.id.action_addDispenser:
+                Location myLocation = myMap.getMyLocation();
+
+                intent.putExtra("MY_LATITUDE",myLocation.getLatitude());
+                intent.putExtra("MY_LONGITUDE",myLocation.getLongitude());
+
                 startActivity(intent);
                 return true;
             default:

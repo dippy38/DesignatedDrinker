@@ -11,6 +11,8 @@ import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.support.v7.app.ActionBarActivity;
 
+import com.google.android.gms.identity.intents.AddressConstants;
+
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -38,8 +40,18 @@ public class AddDispenserActivity extends Activity {
         setContentView(R.layout.activity_add_dispenser);
         WifiManager wm = (WifiManager) getSystemService(WIFI_SERVICE);
 
+        Bundle extras = getIntent().getExtras();
+        double myLongitude=extras.getDouble("MY_LONGITUDE");
+        double myLatitude=extras.getDouble("MY_LATITUDE");
+        
+        String myLatLong = myLatitude + "," + myLongitude;
+        String types = "(liquor_store|grocery_or_supermarket|food)";
+        String rankBy="distance";
+        String keyword="pub";
+        String radius="5000";
+
         try {
-            URL url = new URL("https://maps.googleapis.com/maps/api/place/nearbysearch/json?location=-33.8670522,151.1957362&radius=500&types=food&name=cruise&key=AIzaSyDKD8t3co5hiLOzDBlkX5bQv8yuI2BfX3g");
+            URL url = new URL("https://maps.googleapis.com/maps/api/place/nearbysearch/json?location="+myLatLong+"&radius="+radius+"&types="+types+"&keyword="+keyword+"&rankby="+rankBy+"&key=AIzaSyDKD8t3co5hiLOzDBlkX5bQv8yuI2BfX3g");
             URLConnection connection = url.openConnection();
             String line;
             StringBuilder builder = new StringBuilder();
@@ -50,18 +62,18 @@ public class AddDispenserActivity extends Activity {
 
 
             JSONObject json = new JSONObject(builder.toString());
-            JSONArray results = null;
-//need to sort this loop out
+            JSONArray resultsArray = null;
+            //Idea should have filter which filters out those dispensers that aren't open
                     try{
-                        results  = json.getJSONArray("results");
-                        for (int i=0; i<results.length(); i++) {
-                            JSONObject row = results.getJSONObject(i);
-                            JSONArray geometry = row.getJSONArray("location");
-                            JSONObject geometryRow = results.getJSONObject(i);
+                        resultsArray  = json.getJSONArray("results");
+                        for (int i=0; i<resultsArray.length(); i++) {
+                            JSONObject result = resultsArray.getJSONObject(i);
+                            JSONObject resultGeometry = result.getJSONObject("geometry");
+                            JSONObject resultLocation = resultGeometry.getJSONObject("location");
 
-                            String name = row.getString("name");
-                            double lat = geometryRow.getDouble("lat");
-                            double lng = geometryRow.getDouble("lng");
+                            String name = result.getString("name");
+                            double lng = resultLocation.getDouble("lng");
+                            double lat = resultLocation.getDouble("lat");
                            // Dispenser googleDispenser = new Dispenser(i,name,null,lat,lng,new Date());
                             nearbyDispensers.add("Name: " + name + " Latitude:" + lat + "Longitude" + lng);
                         }
