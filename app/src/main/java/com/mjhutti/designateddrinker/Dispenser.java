@@ -21,6 +21,10 @@ public class Dispenser {
     private Date dateAdded;
 
 
+    public Dispenser(){
+
+    }
+
     public Dispenser(int dispenserID, String name, String drinks, double lat, double lng, Date dateAdded){
         this.dispenserID= dispenserID;
         this.name=name;

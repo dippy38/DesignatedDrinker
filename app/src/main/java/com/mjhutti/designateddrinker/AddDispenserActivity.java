@@ -45,13 +45,12 @@ public class AddDispenserActivity extends Activity {
         double myLatitude=extras.getDouble("MY_LATITUDE");
         
         String myLatLong = myLatitude + "," + myLongitude;
-        String types = "(liquor_store|grocery_or_supermarket|food)";
+        String types = "bar|liquor_store|restaurant|grocery_or_supermarket";
         String rankBy="distance";
-        String keyword="pub";
-        String radius="5000";
+        String radius="250";
 
         try {
-            URL url = new URL("https://maps.googleapis.com/maps/api/place/nearbysearch/json?location="+myLatLong+"&radius="+radius+"&types="+types+"&keyword="+keyword+"&rankby="+rankBy+"&key=AIzaSyDKD8t3co5hiLOzDBlkX5bQv8yuI2BfX3g");
+            URL url = new URL("https://maps.googleapis.com/maps/api/place/nearbysearch/json?location="+myLatLong+"&radius="+radius+"&types="+types+"&rankBy="+rankBy+"&key=AIzaSyDKD8t3co5hiLOzDBlkX5bQv8yuI2BfX3g");
             URLConnection connection = url.openConnection();
             String line;
             StringBuilder builder = new StringBuilder();
