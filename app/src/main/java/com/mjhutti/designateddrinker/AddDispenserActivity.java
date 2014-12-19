@@ -9,7 +9,6 @@ import android.widget.LinearLayout;
 import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
-import android.support.v7.app.ActionBarActivity;
 
 import com.google.android.gms.identity.intents.AddressConstants;
 
