@@ -21,6 +21,14 @@ public class Dispenser {
     private Date dateAdded;
 
 
+
+    //Additional Stuff from Google
+    private double price_level;
+    private double rating;
+    private String icon;
+    private boolean open_now;
+
+
     public Dispenser(){
 
     }
@@ -33,6 +41,20 @@ public class Dispenser {
         this.lng=lng;
         this.dateAdded=dateAdded;
     }
+
+    public Dispenser(int dispenserID, String name, String drinks, double lat, double lng, Date dateAdded, double price_level, double rating, String icon, boolean open_now){
+        this.dispenserID= dispenserID;
+        this.name=name;
+        this.drinks=drinks;
+        this.lat=lat;
+        this.lng=lng;
+        this.dateAdded=dateAdded;
+        this.price_level=price_level;
+        this.rating=rating;
+        this.icon=icon;
+        this.open_now=open_now;
+    }
+
 
     public int getDispenserID() {
         return dispenserID;
@@ -97,5 +119,37 @@ public class Dispenser {
 
     public void setDateAdded(Date dateAdded) {
         this.dateAdded = dateAdded;
+    }
+
+    public double getPrice_level() {
+        return price_level;
+    }
+
+    public void setPrice_level(double price_level) {
+        this.price_level = price_level;
+    }
+
+    public double getRating() {
+        return rating;
+    }
+
+    public void setRating(double rating) {
+        this.rating = rating;
+    }
+
+    public String getIcon() {
+        return icon;
+    }
+
+    public void setIcon(String icon) {
+        this.icon = icon;
+    }
+
+    public boolean isOpen_now() {
+        return open_now;
+    }
+
+    public void setOpen_now(boolean open_now) {
+        this.open_now = open_now;
     }
 }
