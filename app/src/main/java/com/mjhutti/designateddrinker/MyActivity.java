@@ -8,12 +8,14 @@ import android.location.Location;
 import android.location.LocationManager;
 import android.os.Bundle;
 import android.os.StrictMode;
+import android.provider.Settings;
 import android.text.SpannableString;
 import android.text.style.ForegroundColorSpan;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GooglePlayServicesUtil;
@@ -59,6 +61,17 @@ public class MyActivity extends Activity {
         StrictMode.setThreadPolicy(policy);
         //Get Map and Location Manager
         locMan = (LocationManager)getSystemService(Context.LOCATION_SERVICE);
+        if(!locMan.isProviderEnabled(android.location.LocationManager.GPS_PROVIDER ))
+        {
+            Context context = getApplicationContext();
+            CharSequence text = "Please enable GPS";
+            int duration = Toast.LENGTH_SHORT;
+
+            Toast toast = Toast.makeText(context, text, duration);
+            toast.show();
+            Intent myIntent = new Intent( Settings.ACTION_LOCATION_SOURCE_SETTINGS);
+            startActivity(myIntent);
+        }
 
         myMap = ((MapFragment) getFragmentManager().findFragmentById(R.id.map)).getMap();
         myMap.setMyLocationEnabled(true);
