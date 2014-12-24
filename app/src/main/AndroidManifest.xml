@@ -39,24 +39,30 @@
             </intent-filter>
         </activity>
 
-        <searchable xmlns:android="http://schemas.android.com/apk/res/android"
-            android:label="@string/app_name"
-            android:hint="@string/search_hint" >
-        </searchable>
-
-
         <activity
-            android:name="com.mjhutti.designateddrinker.Dispenser"
-            android:label="@string/app_name" >
+            android:name=".SearchDispenserActivity"
+            android:label="@string/app_name"
+            android:parentActivityName="com.mjhutti.designateddrinker.MyActivity" >
+
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.mjhutti.designateddrinker.MyActivity" />
+
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
         </activity>
+
 
         <activity
             android:name=".AddDispenserActivity"
             android:label="@string/app_name"
-            android:parentActivityName="com.mjhutti.designateddrinker.MyActivity" >
+            android:parentActivityName="com.mjhutti.designateddrinker.SearchDispenserActivity" >
+
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.mjhutti.designateddrinker.MyActivity" />
+                android:value="com.mjhutti.designateddrinker.SearchDispenserActivity" />
 
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

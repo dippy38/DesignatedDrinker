@@ -49,7 +49,7 @@ import java.util.Date;
 public class MyActivity extends Activity {
 
     private LocationManager locMan;
-    private GoogleMap myMap;
+    public static GoogleMap myMap;
     private long AGE_THRESHOLD=100;
 
     @Override
@@ -65,7 +65,7 @@ public class MyActivity extends Activity {
         {
             Context context = getApplicationContext();
             CharSequence text = "Please enable GPS";
-            int duration = Toast.LENGTH_SHORT;
+            int duration = Toast.LENGTH_LONG;
 
             Toast toast = Toast.makeText(context, text, duration);
             toast.show();
@@ -129,7 +129,12 @@ public class MyActivity extends Activity {
             if(response != null) {
                 parseJSON(response);
             } else {
-                parseJSON(response);
+                Context context = getApplicationContext();
+                CharSequence text = "Database is down";
+                int duration = Toast.LENGTH_SHORT;
+
+                Toast toast = Toast.makeText(context, text, duration);
+                toast.show();
             }
         } catch (ClientProtocolException e) {
             parseJSON(response);
@@ -224,17 +229,29 @@ public class MyActivity extends Activity {
         // Handle action bar item clicks here. The action bar will
         // automatically handle clicks on the Home/Up button, so long
         // as you specify a parent activity in AndroidManifest.xml.
-        Intent intent = new Intent(this, AddDispenserActivity.class);
+        Intent intent = new Intent(this, SearchDispenserActivity.class);
 
         switch (item.getItemId()) {
             case R.id.action_addDispenser:
                 Location myLocation = myMap.getMyLocation();
+                if (myLocation!=null){
+                    intent.putExtra("MY_LATITUDE",myLocation.getLatitude());
+                    intent.putExtra("MY_LONGITUDE",myLocation.getLongitude());
+                    startActivity(intent);
+                    return true;
+            }
+                else{
+                    Context context = getApplicationContext();
+                    CharSequence text = "Unable to find location please wait and try again";
+                    int duration = Toast.LENGTH_LONG;
+                    Toast toast = Toast.makeText(context, text, duration);
+                    toast.show();
+                    return false;
+                }
 
-                intent.putExtra("MY_LATITUDE",myLocation.getLatitude());
-                intent.putExtra("MY_LONGITUDE",myLocation.getLongitude());
 
-                startActivity(intent);
-                return true;
+
+
             default:
                 return super.onOptionsItemSelected(item);
         }
