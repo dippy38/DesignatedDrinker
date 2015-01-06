@@ -107,7 +107,7 @@ public class SearchDispenserActivity extends Activity {
 
                             //double price_level, double rating, String icon, boolean open_now){
                             //Dispenser nearbyDispenser = new Dispenser(1,name,null,lat,lng,null,priceLevel,rating,icon,openFlag);
-                            nearbyDispensers.add("Name: " + name + " Latitude:" + lat + " Longitude" + lng);
+                            nearbyDispensers.add("Name:" + name + " ,Latitude:" + lat + " ,Longitude:" + lng);
                             //nearbyDispensers.add(nearbyDispenser.toString());
                         }
                     }
@@ -138,13 +138,15 @@ public class SearchDispenserActivity extends Activity {
             public void onItemClick(AdapterView<?> arg0, View arg1, int arg2,long arg3) {
 
                 String item = ((TextView)arg1).getText().toString();
-                CharSequence text = item;
-                Toast toast = Toast.makeText(getApplicationContext(), text, Toast.LENGTH_SHORT);
-                toast.show();
+                String[] items = item.split(",");
+                String dispenserName = items[0].split(":")[1];
+                String lat  = items[1].split(":")[1];
+                String lng  = items[2].split(":")[1];
+
                 Intent intent = new Intent(getApplicationContext(), AddDispenserActivity.class);
-
-                intent.putExtra("DISPENSER_NAME",text);
-
+                intent.putExtra("DISPENSER_NAME",dispenserName);
+                intent.putExtra("LATITUDE",lat);
+                intent.putExtra("LONGITUDE",lng);
                 startActivity(intent);
             }
 

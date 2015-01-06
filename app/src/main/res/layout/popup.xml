@@ -36,5 +36,11 @@
             android:textSize="14dp"/>
     </LinearLayout>
 
+    <EditText
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/editText"
+        android:layout_weight="1" />
+
 
 </LinearLayout>

@@ -64,10 +64,7 @@ public class MyActivity extends Activity {
         if(!locMan.isProviderEnabled(android.location.LocationManager.GPS_PROVIDER ))
         {
             Context context = getApplicationContext();
-            CharSequence text = "Please enable GPS";
-            int duration = Toast.LENGTH_LONG;
-
-            Toast toast = Toast.makeText(context, text, duration);
+            Toast toast = Toast.makeText(context, "Please enable GPS", Toast.LENGTH_LONG);
             toast.show();
             Intent myIntent = new Intent( Settings.ACTION_LOCATION_SOURCE_SETTINGS);
             startActivity(myIntent);
@@ -78,6 +75,7 @@ public class MyActivity extends Activity {
 
         try {
             loadMarkers();
+            zoomToMyLocation();
         } catch (UnsupportedEncodingException e) {
             e.printStackTrace();
         }
@@ -104,11 +102,10 @@ public class MyActivity extends Activity {
                 txtSnippet.setText(marker.getSnippet());
                 return contents;
 
-
             }
         });
 
-        zoomToMyLocation();
+
 
 
     }
@@ -137,9 +134,9 @@ public class MyActivity extends Activity {
                 toast.show();
             }
         } catch (ClientProtocolException e) {
-            parseJSON(response);
+            e.printStackTrace();
         } catch (IOException e) {
-            parseJSON(response);
+            e.printStackTrace();
         }
 
     }
@@ -202,12 +199,13 @@ public class MyActivity extends Activity {
     public void zoomToMyLocation(){
         if (myMap != null) {
             Location lastLoc = locMan.getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
-            LatLng myLatLng = new LatLng(lastLoc.getLatitude(), lastLoc.getLongitude());
-            CameraUpdate center=CameraUpdateFactory.newLatLng(myLatLng);
-            myMap.moveCamera(center);
-            CameraUpdate zoom=CameraUpdateFactory.zoomTo(15);
-            myMap.animateCamera(zoom);
-
+            if (lastLoc!=null) {
+                LatLng myLatLng = new LatLng(lastLoc.getLatitude(), lastLoc.getLongitude());
+                CameraUpdate center = CameraUpdateFactory.newLatLng(myLatLng);
+                myMap.moveCamera(center);
+                CameraUpdate zoom = CameraUpdateFactory.zoomTo(15);
+                myMap.animateCamera(zoom);
+            }
         } else {
             int isEnabled = GooglePlayServicesUtil.isGooglePlayServicesAvailable(this);
             if (isEnabled != ConnectionResult.SUCCESS) {
