@@ -2,6 +2,6 @@
     xmlns:tools="http://schemas.android.com/tools"
     tools:context=".MyActivity" >
     <item android:id="@+id/action_addDispenser"
-        android:title="@string/action_addDispenser"
+        android:title="@string/action_addUpdateDispenser"
         android:orderInCategory="100"/>
 </menu>

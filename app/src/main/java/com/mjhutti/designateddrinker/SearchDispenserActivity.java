@@ -3,9 +3,7 @@ package com.mjhutti.designateddrinker;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
-import android.net.wifi.WifiManager;
 import android.os.Bundle;
-import android.text.format.Formatter;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -16,8 +14,6 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.google.android.gms.identity.intents.AddressConstants;
-
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -26,11 +22,7 @@ import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.net.URL;
 import java.net.URLConnection;
-import java.text.DateFormat;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
 
 /**
  * Created by mjhutti on 16/12/2014.
@@ -44,10 +36,10 @@ public class SearchDispenserActivity extends Activity {
         ArrayList<String> nearbyDispensers = new ArrayList<String>();
         setContentView(R.layout.activity_add_dispenser);
 
-        String myLatLong = new String (MyActivity.myMap.getMyLocation().getLatitude() + "," + MyActivity.myMap.getMyLocation().getLongitude());
+        String myLatLong = MyActivity.myMap.getMyLocation().getLatitude() + "," + MyActivity.myMap.getMyLocation().getLongitude();
         String types = "bar|liquor_store|restaurant|grocery_or_supermarket";
         String rankBy="distance";
-        String radius="1000";
+        String radius="500";
 
         try {
             URL url = new URL("https://maps.googleapis.com/maps/api/place/nearbysearch/json?location="+myLatLong+"&radius="+radius+"&types="+types+"&rankBy="+rankBy+"&key=AIzaSyDKD8t3co5hiLOzDBlkX5bQv8yuI2BfX3g");
@@ -139,11 +131,11 @@ public class SearchDispenserActivity extends Activity {
 
                 String item = ((TextView)arg1).getText().toString();
                 String[] items = item.split(",");
-                String dispenserName = items[0].split(":")[1];
-                String lat  = items[1].split(":")[1];
-                String lng  = items[2].split(":")[1];
+                String dispenserName = items[0].split(":")[1].trim();
+                String lat  = items[1].split(":")[1].trim();
+                String lng  = items[2].split(":")[1].trim();
 
-                Intent intent = new Intent(getApplicationContext(), AddDispenserActivity.class);
+                Intent intent = new Intent(getApplicationContext(), AddUpdateDispenserActivity.class);
                 intent.putExtra("DISPENSER_NAME",dispenserName);
                 intent.putExtra("LATITUDE",lat);
                 intent.putExtra("LONGITUDE",lng);

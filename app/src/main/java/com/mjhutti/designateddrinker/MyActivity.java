@@ -234,7 +234,7 @@ public class MyActivity extends Activity {
                 Location myLocation = myMap.getMyLocation();
                 if (myLocation!=null){
                     intent.putExtra("MY_LATITUDE",myLocation.getLatitude());
-                    intent.putExtra("MY_LONGITUDE",myLocation.getLongitude());
+                    intent.putExtra("MY_LONGITUDE",myLocation.getLongitude());;
                     startActivity(intent);
                     return true;
             }
