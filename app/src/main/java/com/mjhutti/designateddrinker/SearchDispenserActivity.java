@@ -34,7 +34,7 @@ public class SearchDispenserActivity extends Activity {
         super.onCreate(savedInstanceState);
 
         ArrayList<String> nearbyDispensers = new ArrayList<String>();
-        setContentView(R.layout.activity_add_dispenser);
+        setContentView(R.layout.activity_search_dispenser);
 
         String myLatLong = MyActivity.myMap.getMyLocation().getLatitude() + "," + MyActivity.myMap.getMyLocation().getLongitude();
         String types = "bar|liquor_store|restaurant|grocery_or_supermarket";

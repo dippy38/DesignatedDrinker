@@ -3,4 +3,6 @@
 
     <string name="app_name">Designated Drinker</string>
     <string name="action_addUpdateDispenser">Add / Update Dispenser</string>
+    <string name="action_settings">Settings</string>
+    <string name="action_save">Save</string>
 </resources>

@@ -82,7 +82,7 @@ public class MyActivity extends Activity {
 
         myMap.setInfoWindowAdapter(new GoogleMap.InfoWindowAdapter() {
 
-            private final View contents = getLayoutInflater().inflate(R.layout.popup, null);
+            private final View contents = getLayoutInflater().inflate(R.layout.marker_popup, null);
 
             public View getInfoWindow(com.google.android.gms.maps.model.Marker marker) {
                 return null;
@@ -227,14 +227,15 @@ public class MyActivity extends Activity {
         // Handle action bar item clicks here. The action bar will
         // automatically handle clicks on the Home/Up button, so long
         // as you specify a parent activity in AndroidManifest.xml.
-        Intent intent = new Intent(this, SearchDispenserActivity.class);
+
 
         switch (item.getItemId()) {
-            case R.id.action_addDispenser:
+            case R.id.action_addUpdate_Dispenser:
                 Location myLocation = myMap.getMyLocation();
                 if (myLocation!=null){
+                    Intent intent = new Intent(this, SearchDispenserActivity.class);
                     intent.putExtra("MY_LATITUDE",myLocation.getLatitude());
-                    intent.putExtra("MY_LONGITUDE",myLocation.getLongitude());;
+                    intent.putExtra("MY_LONGITUDE", myLocation.getLongitude());;
                     startActivity(intent);
                     return true;
             }
@@ -246,8 +247,9 @@ public class MyActivity extends Activity {
                     toast.show();
                     return false;
                 }
-
-
+            case R.id.action_settings:
+                Intent intent = new Intent(this, SettingsActivity.class);
+                startActivity(intent);
 
 
             default:

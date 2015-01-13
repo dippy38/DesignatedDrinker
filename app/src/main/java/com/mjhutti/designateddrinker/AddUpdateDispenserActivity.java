@@ -1,27 +1,14 @@
 package com.mjhutti.designateddrinker;
 
 import android.app.Activity;
-import android.content.Context;
 import android.content.Intent;
-import android.location.Location;
-import android.location.LocationManager;
 import android.os.Bundle;
-import android.os.StrictMode;
-import android.provider.Settings;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.LinearLayout;
-import android.widget.ListAdapter;
-import android.widget.ListView;
-import android.widget.RelativeLayout;
-import android.widget.TextView;
 import android.widget.Toast;
-
-import com.google.android.gms.maps.MapFragment;
 
 import org.apache.http.client.ClientProtocolException;
 import org.apache.http.client.HttpClient;
@@ -37,9 +24,7 @@ import org.json.JSONObject;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
-import java.text.DateFormat;
 import java.text.Format;
-import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
@@ -57,7 +42,7 @@ public class AddUpdateDispenserActivity extends Activity {
        // View v = inflater.inflate(R.layout.new_location_dialog, null);
         //builder.setView(v);
 
-        setContentView(R.layout.add_dispenser);
+        setContentView(R.layout.activity_addupdate_dispenser);
         //Get Bundle
         Bundle bundle = getIntent().getExtras();
         final double lat = Double.valueOf(bundle.getString("LATITUDE"));
@@ -67,14 +52,13 @@ public class AddUpdateDispenserActivity extends Activity {
 
         //Define EditBoxes
         final EditText etName = (EditText) findViewById(R.id.etName);
-                        etName.setText("The Rocket1");
+                        etName.setText(dispenserName);
         final EditText etLatitude = (EditText) findViewById(R.id.etLatitude);
                         etLatitude.setText(bundle.getString("LATITUDE"));
         final EditText etLongitude = (EditText) findViewById(R.id.etLongitude);
                         etLongitude.setText(bundle.getString("LONGITUDE"));
 
         //Populate drinks list if already on database
-        //TODO FIX THIS SO IT DISPLAYS AND ALSO THE TOAST MESSAGE NEEDS TO BE UPDATED IF UPDATING
         String drinks="";
         Dispenser myDispenser = new Dispenser(99, dispenserName, "", lat, lng, new Date());
         try{
@@ -262,15 +246,21 @@ public class AddUpdateDispenserActivity extends Activity {
         // Handle action bar item clicks here. The action bar will
         // automatically handle clicks on the Home/Up button, so long
         // as you specify a parent activity in AndroidManifest.xml.
+
+      /*
         Intent intent = new Intent(this, SearchDispenserActivity.class);
 
         switch (item.getItemId()) {
-            case R.id.action_addDispenser:
-
+            case R.id.action_addUpdate_Dispenser:
                 startActivity(intent);
                 return true;
             default:
                 return super.onOptionsItemSelected(item);
         }
+      */
+        return super.onOptionsItemSelected(item);
     }
+
+
+
 }
