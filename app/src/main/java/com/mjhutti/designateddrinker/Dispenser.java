@@ -152,4 +152,10 @@ public class Dispenser {
     public void setOpen_now(boolean open_now) {
         this.open_now = open_now;
     }
+
+    public float getAgeInDays(){
+        Date todaysDate = new Date();
+        float diffInMillies = todaysDate.getTime() - dateAdded.getTime();
+        return diffInMillies/1000/60/60/24;
+    }
 }

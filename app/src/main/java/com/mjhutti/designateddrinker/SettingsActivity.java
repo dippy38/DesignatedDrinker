@@ -20,18 +20,23 @@ import java.util.Date;
 public class SettingsActivity extends Activity{
     public static final String PREFERENCES = "com.mjhutti.designateddrinker.updatewindow";
 
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_settings);
-
+        SeekBar seekBar = (SeekBar)findViewById(R.id.seekBar);
         final SharedPreferences prefs = this.getSharedPreferences(PREFERENCES, Context.MODE_PRIVATE);
 
         final TextView tvCurrentUpdateWindowValue = (TextView)findViewById(R.id.tvSeekBarValue);
       //  tvCurrentUpdateWindowValue.setText(prefs.getInt("updateWindow",0));
 
-        final SeekBar seekBar = (SeekBar)findViewById(R.id.seekBar);
-        final TextView seekBarValue = (TextView)findViewById(R.id.tvSeekBarValue);
+
+        final TextView lblUpdate_Window = (TextView)findViewById(R.id.lblUpdate_Window);
+        int currentUpdateWindow = prefs.getInt("update_window",0);
+        seekBar.setProgress(currentUpdateWindow);
+        lblUpdate_Window.setText("Update Window (Days): " + currentUpdateWindow);
 
         seekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener(){
 
@@ -39,7 +44,7 @@ public class SettingsActivity extends Activity{
             public void onProgressChanged(SeekBar seekBar, int progress,
                                           boolean fromUser) {
                 // TODO Auto-generated method stub
-                seekBarValue.setText(String.valueOf(progress));
+                lblUpdate_Window.setText("Update Window (Days): " + String.valueOf(progress));
             }
 
             @Override
@@ -50,16 +55,24 @@ public class SettingsActivity extends Activity{
             @Override
             public void onStopTrackingTouch(SeekBar seekBar) {
                 // TODO Auto-generated method stub
+                SharedPreferences settings = getSharedPreferences(PREFERENCES, 0);
+                SharedPreferences.Editor editor = settings.edit();
+                editor.putInt("update_window", seekBar.getProgress());
+
+                // Commit the edits!
+                editor.commit();
             }
         });
-
+/*
         Button saveSettingsButton = (Button) findViewById(R.id.btnSaveSettings);
         saveSettingsButton.setOnClickListener(new Button.OnClickListener() {
             public void onClick(View v) {
 
                 prefs.edit().putInt("update_window", seekBar.getProgress()) ;
+                prefs.edit().commit();
             }
         });
+        */
     }
 
 
@@ -69,12 +82,7 @@ public class SettingsActivity extends Activity{
 
         // We need an Editor object to make preference changes.
         // All objects are from android.context.Context
-        SharedPreferences settings = getSharedPreferences(PREFERENCES, 0);
-        SharedPreferences.Editor editor = settings.edit();
-        editor.putInt("update_window", 345);
 
-        // Commit the edits!
-        editor.commit();
     }
 
 }

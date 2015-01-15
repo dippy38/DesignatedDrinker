@@ -3,6 +3,7 @@ package com.mjhutti.designateddrinker;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.location.Location;
 import android.location.LocationManager;
@@ -50,12 +51,16 @@ public class MyActivity extends Activity {
 
     private LocationManager locMan;
     public static GoogleMap myMap;
-    private long AGE_THRESHOLD=100;
+    public static final String PREFERENCES = "com.mjhutti.designateddrinker.updatewindow";
+    SharedPreferences prefs = null;
+    private float AGE_THRESHOLD;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        prefs= getApplicationContext().getSharedPreferences(PREFERENCES, Context.MODE_PRIVATE);
+        AGE_THRESHOLD=prefs.getInt("update_window",0);
         //Temporary fix according to http://stackoverflow.com/questions/19266553/android-caused-by-android-os-networkonmainthreadexception
         StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
         StrictMode.setThreadPolicy(policy);
@@ -173,17 +178,21 @@ public class MyActivity extends Activity {
     }
 
     public void addMarkers(Dispenser myDispenser){
-        final LatLng CIU = new LatLng(myDispenser.getLat(),myDispenser.getLng());
+        final LatLng dispenserPosition = new LatLng(myDispenser.getLat(),myDispenser.getLng());
         MarkerOptions markerOptions = new MarkerOptions();
 
         Format formatter = new SimpleDateFormat("dd/MM/yyyy");
         String tempDate = formatter.format(myDispenser.getDateAdded());
 
+        float ageInDays=myDispenser.getAgeInDays();
+        String dispenserName = myDispenser.getName();
+        float opacity = calculateOpacity(myDispenser.getDateAdded());
 
-        if (calculateOpacity(myDispenser.getDateAdded())*100<=AGE_THRESHOLD){
+
+        if (myDispenser.getAgeInDays()<=AGE_THRESHOLD){
             markerOptions.alpha(calculateOpacity(myDispenser.getDateAdded()));
-            markerOptions.position(CIU).title(myDispenser.getName());
-            markerOptions.position(CIU).snippet(myDispenser.getFormattedDrinks() + "\n Last Updated: " + tempDate );
+            markerOptions.position(dispenserPosition).title(myDispenser.getName());
+            markerOptions.position(dispenserPosition).snippet(myDispenser.getFormattedDrinks() + "\n Last Updated: " + tempDate + "...." + myDispenser.getAgeInDays());
             myMap.addMarker(markerOptions);
         }
     }
@@ -191,11 +200,22 @@ public class MyActivity extends Activity {
     public float calculateOpacity(Date dateAdded){
         Date todaysDate = new Date();
         float diffInMillies = todaysDate.getTime() - dateAdded.getTime();
-        float diffInDays = AGE_THRESHOLD-(diffInMillies/1000/60/60/24);
-    return diffInDays/100;
+        float diffInDays = (AGE_THRESHOLD-(diffInMillies/1000/60/60/24));
+
+        float opacity=0;
+
+        if (AGE_THRESHOLD<=100){
+            opacity = diffInDays/100;
+        }
+        else{
+            opacity = (diffInDays*(100/AGE_THRESHOLD))/100;               //Scaling factor
+
+        }
+
+    return opacity;
     }
 
-
+//365-2 * 100/365
     public void zoomToMyLocation(){
         if (myMap != null) {
             Location lastLoc = locMan.getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
