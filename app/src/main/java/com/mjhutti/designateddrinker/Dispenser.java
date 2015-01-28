@@ -86,6 +86,7 @@ public class Dispenser {
                 .replace(",", "")  //remove the commas
                 .replace("[", "")  //remove the right bracket
                 .replace("]", "")  //remove the left bracket
+                .replace("]", "")  //remove the left bracket
                 .trim();           //remove trailing spaces from partially initialized arrays
 
         return formatedString;

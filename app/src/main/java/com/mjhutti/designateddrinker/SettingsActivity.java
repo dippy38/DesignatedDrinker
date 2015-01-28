@@ -2,6 +2,7 @@ package com.mjhutti.designateddrinker;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.View;
@@ -10,6 +11,8 @@ import android.app.Activity;
 import android.os.Bundle;
 import android.widget.SeekBar;
 import android.widget.TextView;
+
+import com.google.android.gms.maps.model.LatLng;
 
 import java.util.Date;
 
@@ -26,15 +29,23 @@ public class SettingsActivity extends Activity{
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_settings);
+
+        //Need to add checkboxes for search radius and parameters and perhaps number of results.
+        //Need to send old screen locations back to MainActivity
+        Bundle bundle = getIntent().getExtras();
+        double oldLat  = Double.valueOf(bundle.getDouble("LATITUDE"));
+        double oldLng = Double.valueOf(bundle.getDouble("LONGITUDE"));
+
+
+        Intent intent = new Intent(getApplicationContext(), MyActivity.class);
+        intent.putExtra("MY_LATITUDE",oldLat);
+        intent.putExtra("MY_LONGITUDE",oldLng);
+
         SeekBar seekBar = (SeekBar)findViewById(R.id.seekBar);
         final SharedPreferences prefs = this.getSharedPreferences(PREFERENCES, Context.MODE_PRIVATE);
 
-        final TextView tvCurrentUpdateWindowValue = (TextView)findViewById(R.id.tvSeekBarValue);
-      //  tvCurrentUpdateWindowValue.setText(prefs.getInt("updateWindow",0));
-
-
         final TextView lblUpdate_Window = (TextView)findViewById(R.id.lblUpdate_Window);
-        int currentUpdateWindow = prefs.getInt("update_window",0);
+        int currentUpdateWindow = prefs.getInt("update_window",100);
         seekBar.setProgress(currentUpdateWindow);
         lblUpdate_Window.setText("Update Window (Days): " + currentUpdateWindow);
 
@@ -63,26 +74,9 @@ public class SettingsActivity extends Activity{
                 editor.commit();
             }
         });
-/*
-        Button saveSettingsButton = (Button) findViewById(R.id.btnSaveSettings);
-        saveSettingsButton.setOnClickListener(new Button.OnClickListener() {
-            public void onClick(View v) {
-
-                prefs.edit().putInt("update_window", seekBar.getProgress()) ;
-                prefs.edit().commit();
-            }
-        });
-        */
-    }
-
-
-    @Override
-    protected void onStop() {
-        super.onStop();
-
-        // We need an Editor object to make preference changes.
-        // All objects are from android.context.Context
 
     }
+
+
 
 }
