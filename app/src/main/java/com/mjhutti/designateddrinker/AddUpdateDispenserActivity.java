@@ -106,7 +106,7 @@ public class AddUpdateDispenserActivity extends Activity {
     public String dispenserExists(Dispenser myDispenser) throws UnsupportedEncodingException{
 
         String dispenserExists ="";
-        String baseUrl = "http://www.dipjhutti.zz.vc/dispenserExists.php?lat=" + URLEncoder.encode(String.valueOf(myDispenser.getLat()),"UTF-8")+"&lng=" + URLEncoder.encode(String.valueOf(myDispenser.getLng()));
+        String baseUrl = "http://www.dipjhutti.esy.es/dispenserExists.php?lat=" + URLEncoder.encode(String.valueOf(myDispenser.getLat()),"UTF-8")+"&lng=" + URLEncoder.encode(String.valueOf(myDispenser.getLng()));
 
         HttpClient httpclient = new DefaultHttpClient();
         String response = "";
@@ -164,7 +164,7 @@ public class AddUpdateDispenserActivity extends Activity {
         catch (UnsupportedEncodingException ex){
             throw new RuntimeException("UTF-8 not supported", ex);
         }
-        String baseUrl = "http://www.dipjhutti.zz.vc/updateDispenser.php?drinks="+drinks+"&lat="+ oldDispenser.getLat()+"&lng="+oldDispenser.getLng()+"&dateAdded="+formatter.format(oldDispenser.getDateAdded());
+        String baseUrl = "http://www.dipjhutti.esy.es/updateDispenser.php?drinks="+drinks+"&lat="+ oldDispenser.getLat()+"&lng="+oldDispenser.getLng()+"&dateAdded="+formatter.format(oldDispenser.getDateAdded());
 
         HttpClient httpclient = new DefaultHttpClient();
         String response = "";
@@ -205,7 +205,7 @@ public class AddUpdateDispenserActivity extends Activity {
         catch (UnsupportedEncodingException ex){
             throw new RuntimeException("UTF-8 not supported", ex);
         }
-        String baseUrl = "http://www.dipjhutti.zz.vc/addDispenser.php?dispenserName="+dispenserName+"&drinks="+drinks+"&lat="+ newDispenser.getLat()+"&lng="+newDispenser.getLng()+"&dateAdded="+formatter.format(newDispenser.getDateAdded());
+        String baseUrl = "http://www.dipjhutti.esy.es/addDispenser.php?dispenserName="+dispenserName+"&drinks="+drinks+"&lat="+ newDispenser.getLat()+"&lng="+newDispenser.getLng()+"&dateAdded="+formatter.format(newDispenser.getDateAdded());
 
             HttpClient httpclient = new DefaultHttpClient();
             String response = "";

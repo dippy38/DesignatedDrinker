@@ -281,7 +281,7 @@ public class MyActivity extends Activity implements GoogleApiClient.ConnectionCa
             }
             //If it's the first time, get our current location
             else{
-               // myLocation = LocationServices.FusedLocationApi.getLastLocation(mGoogleApiClient);
+                myLocation = LocationServices.FusedLocationApi.getLastLocation(mGoogleApiClient);
                 if (myLocation!=null){
                     myLatLng = new LatLng(myLocation.getLatitude(), myLocation.getLongitude());
                     CameraUpdate center = CameraUpdateFactory.newLatLng(myLatLng);
@@ -315,7 +315,7 @@ public class MyActivity extends Activity implements GoogleApiClient.ConnectionCa
 
         switch (item.getItemId()) {
             case R.id.action_addUpdate_Dispenser:
-             //   Location myLocation = myMap.getMyLocation();
+                Location myLocation = myMap.getMyLocation();
                 if (myLocation!=null){
                     Intent intent = new Intent(this, SearchDispenserActivity.class);
                     intent.putExtra("MY_LATITUDE",myLocation.getLatitude());
