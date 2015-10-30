@@ -149,7 +149,7 @@ public class MyActivity extends Activity implements GoogleApiClient.ConnectionCa
 
     public void loadMarkers() throws UnsupportedEncodingException {
 
-        String baseUrl = "http://www.dipjhutti.zz.vc/myServer3.php?user=" + URLEncoder.encode("2","UTF-8")+"&format=" + URLEncoder.encode("json","UTF-8") + "&num=" + URLEncoder.encode("10","UTF-8");
+        String baseUrl = "http://www.dipjhutti.esy.es/myServer3.php?user=" + URLEncoder.encode("2","UTF-8")+"&format=" + URLEncoder.encode("json","UTF-8") + "&num=" + URLEncoder.encode("10","UTF-8");
 
         HttpClient httpclient = new DefaultHttpClient();
         String response = "";
