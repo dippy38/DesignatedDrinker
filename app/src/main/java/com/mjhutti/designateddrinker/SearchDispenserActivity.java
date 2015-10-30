@@ -55,13 +55,14 @@ public class SearchDispenserActivity extends Activity {
             JSONObject json = new JSONObject(builder.toString());
             String status = json.getString("status");
             String statusMessage="";
-            switch (status){
-                case "OK" : statusMessage = "We found the following places nearby";break;
-                case "ZERO_RESULTS" : statusMessage = "We couldnt find any places nearby";break;
-                case "OVER_QUERY_LIMIT": statusMessage = "Our servers are taking the rest of the day off";break;
-                case "REQUEST_DENIED":statusMessage= "The app did not provide a key to Google";break;
-                case "INVALID_REQUEST": statusMessage="The location or radius parameter is missing";break;
-            }
+
+           // switch (status){
+            //    case "OK" : statusMessage = "We found the following places nearby";break;
+             //   case "ZERO_RESULTS" : statusMessage = "We couldnt find any places nearby";break;
+              //  case "OVER_QUERY_LIMIT": statusMessage = "Our servers are taking the rest of the day off";break;
+              //  case "REQUEST_DENIED":statusMessage= "The app did not provide a key to Google";break;
+               // case "INVALID_REQUEST": statusMessage="The location or radius parameter is missing";break;
+            //}
 
             Context context = getApplicationContext();
             CharSequence text = statusMessage;
